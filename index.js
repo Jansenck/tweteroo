@@ -14,14 +14,28 @@ server.post('/sign-up', (req, res) => {
     const user = {
         username,
         avatar
-    }
+    };
 
     users = [...users, user];
     res.send("OK");
+
 });
 
 server.get("/tweets", (req, res) => {
-    res.send(tweets);
+    
+    let lastTweets = [];
+
+    if(tweets.length <= 10){
+        for(let i = 0; i < tweets.length; i++){
+            lastTweets.push(tweets[i]);
+        }
+    } else if(tweets.length > 10){
+        for(let i = 0; i < 10; i++){
+            lastTweets.push(tweets[i]);
+        }
+    }
+    
+    res.send(lastTweets);
 });
 
 server.post("/tweets", (req, res) => {
@@ -33,7 +47,8 @@ server.post("/tweets", (req, res) => {
 
     const tweet = {...dataTweet, avatar: userAvatar.avatar};
 
-    tweets = [...tweets, tweet];
+    tweets = [tweet, ...tweets];
+
     res.send("OK");
 });
 
